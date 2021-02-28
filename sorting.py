@@ -3,7 +3,8 @@
 Python provides built-in sort/sorted functions that use timsort internally.
 You cannot use these built-in functions anywhere in this file.
 
-Every function in this file takes a comparator `cmp` as input which controls how the elements of the list should be compared against each other.
+Every function in this file takes a comparator `cmp` as input which
+controls how the elements of the list should be compared against each other.
 If cmp(a,b) returns -1, then a<b;
 if cmp(a,b) returns  1, then a>b;
 if cmp(a,b) returns  0, then a==b.
@@ -11,33 +12,34 @@ if cmp(a,b) returns  0, then a==b.
 
 import random
 
-def cmp_standard(a,b):
+
+def cmp_standard(a, b):
     '''
     used for sorting from lowest to highest
     '''
-    if a<b:
+    if a < b:
         return -1
-    if b<a:
+    if b < a:
         return 1
     return 0
 
 
-def cmp_reverse(a,b):
+def cmp_reverse(a, b):
     '''
     used for sorting from highest to lowest
     '''
-    if a<b:
+    if a < b:
         return 1
-    if b<a:
+    if b < a:
         return -1
     return 0
 
 
-def cmp_last_digit(a,b):
+def cmp_last_digit(a, b):
     '''
     used for sorting based on the last digit only
     '''
-    return cmp_standard(a%10,b%10)
+    return cmp_standard(a % 10, b % 10)
 
 
 def _merged(xs, ys, cmp=cmp_standard):
@@ -71,11 +73,12 @@ def _merged(xs, ys, cmp=cmp_standard):
                 result_ind += 1
                 y_ind += 1
         elif (x_ind != len(xs)) & (y_ind == len(ys)):
-           while x_ind != len(xs):
+            while x_ind != len(xs):
                 result[result_ind] = xs[x_ind]
                 result_ind += 1
                 x_ind += 1
     return result
+
 
 def merge_sorted(xs, cmp=cmp_standard):
     '''
@@ -101,13 +104,15 @@ def merge_sorted(xs, cmp=cmp_standard):
         xs_r_sorted = merge_sorted(xs_r, cmp)
         return _merged(xs_l_sorted, xs_r_sorted, cmp)
 
+
 def quick_sorted(xs, cmp=cmp_standard):
     '''
     Quicksort is like mergesort,
     but it uses a different strategy to split the list.
     Instead of splitting the list down the middle,
-    a "pivot" value is randomly selected, 
-    and the list is split into a "less than" sublist and a "greater than" sublist.
+    a "pivot" value is randomly selected,
+    and the list is split into a "less than" sublist and a
+    "greater than" sublist.
 
     The pseudocode is:
 
@@ -134,6 +139,7 @@ def quick_sorted(xs, cmp=cmp_standard):
         merge1 = _merged(xs_less_sorted, xs_p, cmp)
         return _merged(merge1, xs_ge_sorted, cmp)
 
+
 def quick_sort(xs, cmp=cmp_standard, lo=0, hi=None):
     '''
     EXTRA CREDIT:
@@ -144,10 +150,12 @@ def quick_sort(xs, cmp=cmp_standard, lo=0, hi=None):
     Follow the pseudocode of the Lomuto partition scheme given on wikipedia
     (https://en.wikipedia.org/wiki/Quicksort#Algorithm)
     to implement quick_sort as an in-place algorithm.
-    You should directly modify the input xs variable instead of returning a copy of the list.
+    You should directly modify the input xs variable instead of returning a
+    copy of the list.
     '''
-    if hi == None:
+    if hi is None:
         hi = len(xs) - 1
+
     def partition(xs, lo, hi):
         pivot = xs[hi]
         i = lo
