@@ -46,7 +46,36 @@ def _merged(xs, ys, cmp=cmp_standard):
     and returns a new list containing the elements of both xs and ys.
     Runs in linear time.
     '''
-
+    result = [0] * (len(xs) + len(ys))
+    x_ind = y_ind = result_ind = 0
+    while result_ind != len(result):
+        while (x_ind != len(xs)) & (y_ind != len(ys)):
+            comp = cmp(xs[x_ind], ys[y_ind])
+            if comp == -1:
+                result[result_ind] = xs[x_ind]
+                result_ind += 1
+                x_ind += 1
+            elif comp == 0:
+                result[result_ind] = xs[x_ind]
+                result[result_ind + 1] = ys[y_ind]
+                result_ind += 2
+                x_ind += 1
+                y_ind += 1
+            else:
+                result[result_ind] = ys[y_ind]
+                result_ind += 1
+                y_ind += 1
+        if (x_ind == len(xs)) & (y_ind != len(ys)):
+            while y_ind != len(ys):
+                result[result_ind] = ys[y_ind]
+                result_ind += 1
+                y_ind += 1
+        elif (x_ind != len(xs)) & (y_ind == len(ys)):
+           while x_ind != len(xs):
+                result[result_ind] = xs[x_ind]
+                result_ind += 1
+                x_ind += 1
+    return result
 
 def merge_sorted(xs, cmp=cmp_standard):
     '''
@@ -63,7 +92,14 @@ def merge_sorted(xs, cmp=cmp_standard):
 
     You should return a sorted version of the input list xs
     '''
-
+    if (len(xs) == 1) or (not xs):
+        return xs
+    else:
+        xs_l = xs[:len(xs) // 2]
+        xs_r = xs[len(xs) // 2:]
+        xs_l_sorted = merge_sorted(xs_l, cmp)
+        xs_r_sorted = merge_sorted(xs_r, cmp)
+        return _merged(xs_l_sorted, xs_r_sorted, cmp)
 
 def quick_sorted(xs, cmp=cmp_standard):
     '''
@@ -86,9 +122,19 @@ def quick_sorted(xs, cmp=cmp_standard):
 
     You should return a sorted version of the input list xs
     '''
+    if (len(xs) == 1) or (not xs):
+        return xs
+    else:
+        p = random.choice(xs)
+        xs_p = [x for x in xs if x == p]
+        xs_less = [x for x in xs if x < p]
+        xs_greater_equal = [x for x in xs if x > p]
+        xs_less_sorted = quick_sorted(xs_less, cmp)
+        xs_ge_sorted = quick_sorted(xs_greater_equal, cmp)
+        merge1 = _merged(xs_less_sorted, xs_p, cmp)
+        return _merged(merge1, xs_ge_sorted, cmp)
 
-
-def quick_sort(xs, cmp=cmp_standard):
+def quick_sort(xs, cmp=cmp_standard, lo=0, hi=None):
     '''
     EXTRA CREDIT:
     The main advantage of quick_sort is that it can be implemented in-place,
@@ -100,3 +146,21 @@ def quick_sort(xs, cmp=cmp_standard):
     to implement quick_sort as an in-place algorithm.
     You should directly modify the input xs variable instead of returning a copy of the list.
     '''
+    if hi == None:
+        hi = len(xs) - 1
+    def partition(xs, lo, hi):
+        pivot = xs[hi]
+        i = lo
+        for j in range(lo, hi):
+            if cmp(xs[j], pivot) == -1:
+                xs[i], xs[j] = xs[j], xs[i]
+                i += 1
+        xs[i], xs[hi] = xs[hi], xs[i]
+        return i
+
+    if lo < hi:
+        p = partition(xs, lo, hi)
+        quick_sort(xs, cmp, lo, p - 1)
+        quick_sort(xs, cmp, p + 1, hi)
+    else:
+        return xs
