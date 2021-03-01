@@ -1,5 +1,5 @@
-[![main tests](https://github.com/Michaelhess17/sorting/actions/workflows/main.yml/badge.svg)](https://github.com/Michaelhess17/sorting/actions/workflows/main.yml)
-[![ec tests](https://github.com/Michaelhess17/sorting/actions/workflows/ec.yml/badge.svg)](https://github.com/Michaelhess17/sorting/actions/workflows/ec.yml)
+[![tests](https://github.com/Michaelhess17/sorting/actions/workflows/tests.yml/badge.svg)](https://github.com/Michaelhess17/sorting/actions/workflows/tests.yml)
+[![extra credit](https://github.com/Michaelhess17/sorting/actions/workflows/tests-ec.yml/badge.svg)](https://github.com/Michaelhess17/sorting/actions/workflows/tests-ec.yml)
 
 You will implement the merge and quick sort algorithms.
 
